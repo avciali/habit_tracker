@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title> {{ title }}</title>
+    {% block head_content %}
+    {% endblock %}
+</head>
+<body>
+    <header class="header">
+        <h2 class="header__logo"><a class="header__link" href="{{ url_for('habits.index') }}">Habits</a></h2>
+    {% if "add" not in request.endpoint %}
+        <a class="header__link" href="{{ url_for('habits.add_habit') }}">+ Add Habit</a>
+    {% endif %}
+    </header>
+    <main class="main">
+
+        <section class="dates">
+            {% for date in date_range(selected_date) %}
+                <a class="dates__link {{ 'dates__link--current' if loop.index0 == 3 else '' }}" href="{{ url_for('habits.index', date=date) }}">
+                    <time class="date" datetime="{{ date }}">
+                        <span>{{ date.strftime("%a") }}</span>
+                        <span>{{ date.strftime("%d") }}</span>
+                    </time>
+                </a>
+        
+            {% endfor %}
+        </section>
+        {% block main_content %}
+        {% endblock %}
+    </main>
+    
+</body>
+</html>
